@@ -35,7 +35,7 @@ Dataset-20260110T122008Z-1-001/
 - Automatic deduplication and top-k selection
 
 ### 3. **Structured LLM Reasoning** ([src/reasoner.py](src/reasoner.py))
-- Powered by Google Gemini 1.5 Flash
+- Powered by Google Gemini 2.5 Flash
 - Forces structured JSON output with:
   - `analysis`: Detailed reasoning
   - `verdict`: CONSISTENT/CONTRADICT/UNCLEAR
