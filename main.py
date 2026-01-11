@@ -219,6 +219,11 @@ class NarrativeConsistencyAuditor:
         Returns:
             Training metrics and results
         """
+        if self.chunks is None:
+            raise RuntimeError(
+                "Novel index not built. Call load_and_index_novel() before training."
+            )
+        
         print(f"\n{'=' * 70}")
         print("TRAINING ML ARBITRATOR")
         print(f"{'=' * 70}")
@@ -247,14 +252,14 @@ class NarrativeConsistencyAuditor:
                 retrieved_chunks = self.indexer.dual_query_search(
                     backstory_claim=row['content'],
                     character_name=row['char'],
-                    top_k=8
+                    top_k=4
                 )
                 
                 retrieval_features = self.indexer.get_retrieval_features(retrieved_chunks)
                 
                 llm_result = self.reasoner.analyze_consistency(
-                    character_name=row['character_name'],
-                    backstory_claim=row['backstory_claim'],
+                    character_name=row['char'],
+                    backstory_claim=row['content'],
                     context_chunks=retrieved_chunks
                 )
                 
@@ -275,6 +280,11 @@ class NarrativeConsistencyAuditor:
         print(f"\n✓ Feature extraction complete: {X.shape}")
         
         # Train/test split
+        if len(X) == 0:
+            raise RuntimeError(
+                "No training samples generated. Check CSV columns and feature extraction."
+        )
+
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=test_size, random_state=42, stratify=y
         )

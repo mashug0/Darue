@@ -17,7 +17,7 @@ class DualQueryIndexer:
         Args:
             model_name: HuggingFace model identifier for embeddings
         """
-        self.model = SentenceTransformer(model_name)
+        self.model = SentenceTransformer(model_name , device= "cpu")
         self.index = None
         self.chunks = []
         self.chunk_positions = []
